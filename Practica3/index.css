@@ -1,0 +1,23 @@
+body{
+    text-align: center;
+    margin-top: 16%;
+}
+#name{
+    margin-top: 0.5%;
+    text-align: center;
+    margin-left: 1.4%;
+}
+#apellido{
+    margin-top: 0.5%;
+    text-align: center;
+    margin-left: 0.9%;
+}
+#correo{
+    margin-top: 0.5%;
+    text-align: center;
+    margin-left: 1.8%;
+}
+#dni{
+    margin-top: 0.5%;
+    margin-left: 2.7%;
+}
