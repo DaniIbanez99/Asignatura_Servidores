@@ -15,7 +15,7 @@
         <form action="index.php" method="post">
             <div class="grupos">
                 <label for="name">Total de lo gastado</label>
-               <input type="text" id="name" name="valorcesta" value="" type="text">
+               <input type="number" id="name" name="valorcesta" value="">
                <input type="submit" id="calculo" name="calculo">
             </div>
         </form>
@@ -42,7 +42,7 @@
         <form action="index.php" method="post">
             <div class="grupos">
                 <label for="name">Total de lo gastado</label>
-               <input type="text" id="name" name="valorcesta" value="" type="text">
+               <input type="number" id="name" name="valorcesta" value="" >
                <input type="submit" id="calculo" name="calculo">
             </div>
         </form>
@@ -69,6 +69,58 @@
         }
     }
     ?>
-    
+    <!--Ejercicio 3-->
+    <div id="titulo">
+        <h1>Ejercicio 3</h1>
+    </div>
+    <form action="index.php" method="post">
+            <div class="grupos">
+                <label for="name">Pon 5 números</label>
+               <input type="number" id="name" name="valorcesta1" value="" >
+               <input type="number" id="name" name="valorcesta2" value="" >
+               <input type="number" id="name" name="valorcesta3" value="" >
+               <input type="number" id="name" name="valorcesta4" value="" >
+               <input type="number" id="name" name="valorcesta5" value="" >
+               <input type="submit" id="calculo" name="calculo">
+            </div>
+        </form>
+    <?php
+        if(isset($_POST["calculo"])){
+            $valores = array(
+                $_POST["valorcesta1"],
+                $_POST["valorcesta2"],
+                $_POST["valorcesta3"],
+                $_POST["valorcesta4"],
+                $_POST["valorcesta5"]
+            );
+            $mayor = $valores[0];
+
+            for ($i = 0; $i < 5; $i++ ){
+                if($valores[$i] > $mayor){
+                    $mayor = $valores[$i];
+                }
+            }
+           echo "El número mayor es $mayor";
+        }   
+    ?>
+     <!--Ejercicio 4-->
+     <div id="titulo">
+        <h1>Ejercicio 4</h1>
+    </div>
+    <form action="index.php" method="post">
+    <input type="submit" id="calculo" name="calculo1">
+    </form>
+    <?php
+     if(isset($_POST["calculo1"])){
+        $valores =array(array(3,1), array(2,0));
+
+        foreach ($valores as $fila){
+           foreach ($fila as $elemento){
+                echo "$elemento";
+           }
+               echo "<br>" ;
+        }
+     }
+    ?>
 </body>
 </html>
