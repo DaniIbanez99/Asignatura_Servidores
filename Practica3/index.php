@@ -122,5 +122,24 @@
         }
      }
     ?>
+     <!--Ejercicio 5-->
+     <div id="titulo">
+        <h1>Ejercicio 5</h1>
+    </div>
+    <form action="index.php" method="post">
+    <input type="submit" id="calculo" name="calculo2">
+    </form>
+    <?php
+     if(isset($_POST["calculo2"])){
+        $valores =array(array(1,0), array(0,1));
+
+        foreach ($valores as $fila){
+           foreach ($fila as $elemento){
+                echo "$elemento" + "$elemento";
+           }
+               echo "<br>" ;
+        }
+     }
+    ?>
 </body>
 </html>
