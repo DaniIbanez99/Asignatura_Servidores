@@ -21,6 +21,7 @@
         </form>
     </div>
     <?php
+        //calcula los gastos de envío según el valor de compra ingresado en un formulario, utilizando "if".
         if(isset($_POST["valorcesta"])){
             $valorcesta = $_POST["valorcesta"];
             if($valorcesta < 50){
@@ -48,6 +49,7 @@
         </form>
     </div>
     <?php
+      //Lo mismo que el uno pero con switch 
       if(isset($_POST["valorcesta"])){
         $valorcesta = $_POST["valorcesta"];
         
@@ -85,6 +87,7 @@
             </div>
         </form>
     <?php
+        //lo que hace es que le usuario ponga 5 numeros.
         if(isset($_POST["calculo"])){
             $valores = array(
                 $_POST["valorcesta1"],
@@ -94,7 +97,7 @@
                 $_POST["valorcesta5"]
             );
             $mayor = $valores[0];
-
+            //Y con el for vas ordenando los numeros donde se actulizará hasta que sea el número más grande.
             for ($i = 0; $i < 5; $i++ ){
                 if($valores[$i] > $mayor){
                     $mayor = $valores[$i];
@@ -113,7 +116,7 @@
     <?php
      if(isset($_POST["calculo1"])){
         $valores =array(array(3,1), array(2,0));
-
+        //Con este for recorremos los dos arrays
         foreach ($valores as $fila){
            foreach ($fila as $elemento){
                 echo "$elemento";
@@ -130,25 +133,25 @@
     <input type="submit" id="calculo" name="calculo2">
     </form>
     <?php
+     //
      if(isset($_POST["calculo2"])){
         $valores =array(array(1,0), array(0,1));
         $valores1 =array(array(0,1), array(1,0));
-
-        $suma = 0;
-
-        foreach ($valores as $fila){
-           foreach ($fila as $elemento){
-                $suma += $elemento;
-           }
-               echo "<br>" ;
-        }
-        foreach ($valores1 as $fila1){
-            foreach ($fila1 as $elemento1){
-                 $suma += $elemento1;
+        $resultado = array(array(0, 0),array(0, 0));
+       
+        for ($i = 0; $i < 2; $i++) {
+            for ($j = 0; $j < 2; $j++) {
+                $resultado[$i][$j] = $valores[$i][$j] + $valores1[$i][$j];
             }
-         }
-         echo "La suma de los elementos es: " . $suma;
-     }
+        }
+        //Con este for sumamos las dos matrices. 
+            foreach($resultado as $fila) {
+                foreach ($fila as $elemento) {
+                    echo " $elemento ";
+                }
+                    echo "<br>";    
+                }
+        }
     ?>
 </body>
 </html>
