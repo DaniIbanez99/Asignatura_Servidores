@@ -132,13 +132,22 @@
     <?php
      if(isset($_POST["calculo2"])){
         $valores =array(array(1,0), array(0,1));
+        $valores1 =array(array(0,1), array(1,0));
+
+        $suma = 0;
 
         foreach ($valores as $fila){
            foreach ($fila as $elemento){
-                echo "$elemento" + "$elemento";
+                $suma += $elemento;
            }
                echo "<br>" ;
         }
+        foreach ($valores1 as $fila1){
+            foreach ($fila1 as $elemento1){
+                 $suma += $elemento1;
+            }
+         }
+         echo "La suma de los elementos es: " . $suma;
      }
     ?>
 </body>
