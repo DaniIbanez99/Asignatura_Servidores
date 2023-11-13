@@ -8,7 +8,7 @@
     <style>
         .contenedor{
             background-color: #cfcfcf;
-            width: 15%;
+            width: 30%;
             margin-left: 40%;
             margin-top: 10%;
         }
@@ -39,5 +39,6 @@
             <p><input type="submit" class="boton" value="Iniciar Sesión"/></p>
         </form>
     </div>
+   
 </body>
 </html>

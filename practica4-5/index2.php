@@ -17,35 +17,45 @@
         $password = $_POST['password'];
          // Llama a la función 'validar' para comprobar las credenciales
         if (validar($usuario, $password)) {
-
-                 echo 'Bienvenido!';
+            //Para poner el rol del usuario
+                $_SESSION['usuario'] = $usuario;
+                if ($usuario == 'admin'){
+                    $_SESSION["rol"] = "jefe";
+                }else{
+                    $_SESSION["rol"] = "normal";
+                }
+                 echo 'La ';
                  fecha();
         } else {
                 echo 'incorrecto';
                 header('Location: index.php');
+                exit();
         }
         }
+            // Función para validar el usuario y la contraseña
+            function validar($usuario, $password) {
+                // Comprueba que lo que introducimos es correcto
+                if (($usuario == 'admin' && $password == '1234') || ($usuario == 'cliente1' && $password == '5678')) {
+                return true;
+                }else {
+                return false;
+                }}
+        
          //Tiene que mostrar la fecha y la hora de acceso al usuario.
 
             function fecha(){
                 $fecha = date("d-m-Y h:i:s");
-                echo "L fecha y la hora es: " . $fecha;
+                echo " fecha y la hora es: " . $fecha;
             }
-        // Función para validar las credenciales de usuario
-        function validar($usuario, $password) {
-        if ($usuario == 'admin' && $password == '1234') {
-            return true;
-        }
-             return false;
-}   
+            if(isset($_SESSION['usuario'])){
     //Ejercicio1
    // Verifica si se ha enviado un parámetro 'obtener_ayuda' a través de la URL (GET)
     if(isset($_GET['obtener_ayuda'])){
-         // Obtiene la ruta actual de la página desde la variable $_SERVER
-        $ruta_actual= $_SERVER['REQUEST_URI'];
+         // Obtiene la ruta actual de la página desde getcwd().
+        $ruta_actual= getcwd();
         // Muestra la ruta actual al usuario
         echo "La ruta actual es: " . $ruta_actual;
-    }
+    }}
     ?>
     <!--Ejercicio 2-->
     <form  method="post">
@@ -67,6 +77,10 @@
     }
     ?>
     <!--Ejercicio 3-->
+    <?php
+        if($_SESSION["rol"] == "jefe"){
+    
+    ?>
     <form action="index2.php" method="post">
         <label for="nombres_archivo">Nombre del Archivo:</label>
         <input type="text" name="nombres_archivo" id="nombres_archivo" required>
@@ -79,7 +93,9 @@
         <br>
         <input type="submit" value="Crear y Escribir en el Archivo">
     </form>
+
     <?php
+        }
 if (isset($_POST['nombres_archivo'], $_POST['contenido'], $_POST['permisos'])) {
     $nombres_archivo = $_POST['nombres_archivo']; // Cambiado de 'nombre_archivo' a 'nombres_archivo'
     $contenido = $_POST['contenido'];
@@ -104,6 +120,39 @@ if (isset($_POST['nombres_archivo'], $_POST['contenido'], $_POST['permisos'])) {
     }
 }
 ?>
+<!--Practica 5-->
 
+    <?php
+        session_start();
+
+        // Validar la autenticación del usuario
+if (isset($_POST['login']) && isset($_POST['password'])) {
+    $usuario = $_POST['login'];
+    $password = $_POST['password'];
+    
+    if (validar($usuario, $password)) {
+    $_SESSION["usuario"] = $usuario;
+    if ($usuario =="admin") {
+    $_SESSION["rol"] = "jefe";
+    }else{
+    $_SESSION["rol"] = "normal";
+    }
+    // Establecer una cookie de sesión con el nombre del usuario
+    setcookie('usuario', $usuario, time() + 3600, '/');
+    
+    echo 'Hola ' . htmlspecialchars($usuario);
+    fecha();
+    } else {
+    echo 'Usuario o contraseña incorrectos';
+    header('Location: index2.php');
+    exit();
+    }
+}else{
+    header('location: index.php');
+}
+        ?>
+        <form action="cerrar.php" method="post">
+            <input type="submit" name="cerrar_sesion" value="log out">
+        </form>
 </body>
 </html>
