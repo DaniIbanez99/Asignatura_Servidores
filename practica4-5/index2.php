@@ -10,6 +10,7 @@
         <input type="submit" name="obtener_ayuda" value="Obtener Ruta Actual">
     </form>
 <?php
+ session_start();
     //formulario
     // Verifica si se han enviado los campos 'login' y 'password' a través del método POST
     if (isset($_POST['login']) && isset($_POST['password'])) {
@@ -121,36 +122,6 @@ if (isset($_POST['nombres_archivo'], $_POST['contenido'], $_POST['permisos'])) {
 }
 ?>
 <!--Practica 5-->
-
-    <?php
-        session_start();
-
-        // Validar la autenticación del usuario
-if (isset($_POST['login']) && isset($_POST['password'])) {
-    $usuario = $_POST['login'];
-    $password = $_POST['password'];
-    
-    if (validar($usuario, $password)) {
-    $_SESSION["usuario"] = $usuario;
-    if ($usuario =="admin") {
-    $_SESSION["rol"] = "jefe";
-    }else{
-    $_SESSION["rol"] = "normal";
-    }
-    // Establecer una cookie de sesión con el nombre del usuario
-    setcookie('usuario', $usuario, time() + 3600, '/');
-    
-    echo 'Hola ' . htmlspecialchars($usuario);
-    fecha();
-    } else {
-    echo 'Usuario o contraseña incorrectos';
-    header('Location: index2.php');
-    exit();
-    }
-}else{
-    header('location: index.php');
-}
-        ?>
         <form action="cerrar.php" method="post">
             <input type="submit" name="cerrar_sesion" value="log out">
         </form>
