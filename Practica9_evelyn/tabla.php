@@ -44,7 +44,6 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 <?php
-    include 'config.php';
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = $_POST['name'];
@@ -61,10 +60,12 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmtInsert->bindParam(':registrationDate', $registrationDate, PDO::PARAM_STR);
 
         $stmtInsert->execute();
+
+        header('location: tabla.php'); // Redirige a tu página principal después de procesar el formulario
+        exit();
     }
 
-    header('location: tabla.php'); // Redirige a tu página principal después de procesar el formulario
-    exit();
+   
 ?>
 <!-- Tabla de usuarios -->
 <table>
@@ -80,7 +81,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($usuarios as $usuario): ?>
+        <?php foreach ($usuarios as $usuario){ ?>
             <tr>
                 <td><?php echo $usuario['Name']; ?></td>
                 <td><?php echo $usuario['Surname']; ?></td>
@@ -95,7 +96,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </form>
                 </td>
             </tr>
-        <?php endforeach; ?>
+        <?php } ?>
     </tbody>
 </table>
 
