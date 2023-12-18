@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class AnimalesTakeliController extends Controller
@@ -9,6 +10,6 @@ class AnimalesTakeliController extends Controller
     public function getanimales(){
         $animales = ['Takeli', 'Leon', 'Gazela', 'Hiena', 'Simba'];
 
-        return reponse() -> json(['mensaje' => 'Estos son animales', 'datos' => $animales]);
+        return response() -> json(['mensaje' => 'Estos son animales', 'datos' => $animales]);
     }
 }
