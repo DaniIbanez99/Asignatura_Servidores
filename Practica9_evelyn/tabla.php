@@ -39,25 +39,71 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <input type="text" name="career" placeholder="Career">
             <input type="text"  name="state" placeholder="State">
             <input type="text" name="registration_date" placeholder="Registration Date">
-            <input type="submit" class="create" value="Create">
+            <input type="submit" class="create" name="create" value="Create">
         </form>
     </div>
 </div>
 <?php
 
+    /*para insertar*/ 
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
+        // Verificar que se hayan enviado todos los datos necesarios
+        if (
+            isset($_POST['name']) &&
+            isset($_POST['surname']) &&
+            isset($_POST['career']) &&
+            isset($_POST['state']) &&
+            isset($_POST['registration_date'])
+        ) {
+            // Obtener los datos del formulario
+            $name = $_POST['name'];
+            $surname = $_POST['surname'];
+            $career = $_POST['career'];
+            $state = $_POST['state'];
+            $registration_date = $_POST['registration_date'];
+    
+            // Verificar que $name no sea nulo o vacío
+            if (!empty($name)) {
+                // Preparar la consulta de inserción
+                $stmt = $pdo->prepare('INSERT INTO evelyn (Name, Surname, Career, State, Registration_Date) VALUES (:name, :surname, :career, :state, :registration_date)');
+                $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+                $stmt->bindParam(':surname', $surname, PDO::PARAM_STR);
+                $stmt->bindParam(':career', $career, PDO::PARAM_STR);
+                $stmt->bindParam(':state', $state, PDO::PARAM_STR);
+
+
+                $fechaFormateada = date('Y-m-d', strtotime($registration_Date));
+                $stmt->bindParam(':registration_date', $fechaFormateada, PDO::PARAM_STR);
+    
+                // Ejecutar la consulta de inserción
+                if ($stmt->execute()) {
+                    // Redirigir a la misma página después de la inserción
+                    header('Location: tabla.php');
+                    exit;
+                } else {
+                    echo "Error al insertar el usuario.";
+                }
+            } else {
+                echo "El nombre no puede ser nulo o vacío.";
+            }
+        }
+    }
+    
+
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $name = $_POST['name'];
-        $surname = $_POST['surname'];
-        $career = $_POST['career'];
-        $state = $_POST['state'];
-        $registrationDate = $_POST['registration_date'];
+        $name = $_POST['Name'];
+        $surname = $_POST['Surname'];
+        $career = $_POST['Career'];
+        $state = $_POST['State'];
+        $registrationDate = $_POST['Registration_Date'];
 
         $stmtInsert = $pdo->prepare('INSERT INTO evelyn (Name, Surname, Career, State, `Registration Date`) VALUES (:name, :surname, :career, :state, :registrationDate)');
         $stmtInsert->bindParam(':name', $name, PDO::PARAM_STR);
         $stmtInsert->bindParam(':surname', $surname, PDO::PARAM_STR);
         $stmtInsert->bindParam(':career', $career, PDO::PARAM_STR);
         $stmtInsert->bindParam(':state', $state, PDO::PARAM_STR);
-        $stmtInsert->bindParam(':registrationDate', $registrationDate, PDO::PARAM_STR);
+        $stmtInsert->bindParam(':registrationDate', $registration_date, PDO::PARAM_STR);
 
         $stmtInsert->execute();
 
@@ -87,7 +133,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <td><?php echo $usuario['Surname']; ?></td>
                 <td><?php echo $usuario['Career']; ?></td>
                 <td><?php echo $usuario['State']; ?></td>
-                <td><?php echo $usuario['Registration Date']; ?></td>
+                <td><?php echo $usuario['Registration_Date']; ?></td>
                 <td>
                     <!-- Mueve esta sección dentro de la celda correspondiente -->
                     <form method="post" action="">
