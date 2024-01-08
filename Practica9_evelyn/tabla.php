@@ -1,3 +1,13 @@
+<!--
+PDO(PHP Data Object) es una extensión en PHP que proporciona una interfaz consistente para interactuar 
+con bases de datos. Permite la portabilidad del código al trabajar con diferentes sistemas de gestión 
+de bases de datos.
+
+PDO utiliza sentencias preparadas para prevenir ataques de inyección SQL, ofrece eficiencia en el rendimiento
+y facilita la conexión, consulta y manipulación de datos en bases de datos desde PHP.
+-->
+
+
 <?php
  session_start();
     //formulario
