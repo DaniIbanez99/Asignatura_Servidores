@@ -1,4 +1,36 @@
 <?php
+ session_start();
+    //formulario
+    // Verifica si se han enviado los campos 'login' y 'password' a través del método POST
+    if (isset($_POST['login']) && isset($_POST['password'])) {
+        $usuario = $_POST['login'];
+        $password = $_POST['password'];
+         // Llama a la función 'validar' para comprobar las credenciales
+        if (validar($usuario, $password)) {
+            //Para poner el rol del usuario
+                $_SESSION['usuario'] = $usuario;
+                if ($usuario == 'admin'){
+                    $_SESSION["rol"] = "jefe";
+                }else{
+                    $_SESSION["rol"] = "normal";
+                }
+                  
+        } else {
+                echo 'incorrecto';
+                header('Location: tabla.php');
+                exit();
+        }
+        }
+            // Función para validar el usuario y la contraseña
+            function validar($usuario, $password) {
+                // Comprueba que lo que introducimos es correcto
+                if (($usuario == 'admin' && $password == '1234') || ($usuario == 'cliente1' && $password == '5678')) {
+                    return true;
+                }else {
+                    return false;
+                }}
+    if (isset($_SESSION["usuario"])) {
+
 include 'config.php';
 
 if (isset($_POST['delete_user'])) {
@@ -21,11 +53,47 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="formulario.css">
 <title>CRUD con PDO</title>
+<style>
+    table {
+        margin-left: 26%;
+        width: 50%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    form {
+        margin: 0;
+    }
+
+    input[type="submit"] {
+        background-color: #ff0000;
+        color: #fff;
+        padding: 8px 12px;
+        border: none;
+        cursor: pointer;
+    }
+    #style{
+        margin-left: 48.5%;
+        margin-top: 2%;
+    }
+</style>
+
 </head>
 <body>
-
-<h2>Usuarios</h2>
-
 <!-- Elimina el formulario exterior -->
 <div class="register-page">
     <div class="form">
@@ -38,7 +106,7 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <input type="text" name="surname" placeholder="Surname">
             <input type="text" name="career" placeholder="Career">
             <input type="text"  name="state" placeholder="State">
-            <input type="text" name="registration_date" placeholder="Registration Date">
+            <input type="text" name="registration_date" placeholder="Registration_Date">
             <input type="submit" class="create" name="create" value="Create">
         </form>
     </div>
@@ -91,19 +159,19 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
 
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $name = $_POST['Name'];
-        $surname = $_POST['Surname'];
-        $career = $_POST['Career'];
-        $state = $_POST['State'];
-        $registrationDate = $_POST['Registration_Date'];
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['create'])) {
+        $name = $_POST['name'];
+        $surname = $_POST['surname'];
+        $career = $_POST['career'];
+        $state = $_POST['state'];
+        $registrationDate = $_POST['registration_date'];
 
-        $stmtInsert = $pdo->prepare('INSERT INTO evelyn (Name, Surname, Career, State, `Registration Date`) VALUES (:name, :surname, :career, :state, :registrationDate)');
+        $stmtInsert = $pdo->prepare('INSERT INTO evelyn (Name, Surname, Career, State, `Registration_Date`) VALUES (:name, :surname, :career, :state, :registrationDate)');
         $stmtInsert->bindParam(':name', $name, PDO::PARAM_STR);
         $stmtInsert->bindParam(':surname', $surname, PDO::PARAM_STR);
         $stmtInsert->bindParam(':career', $career, PDO::PARAM_STR);
         $stmtInsert->bindParam(':state', $state, PDO::PARAM_STR);
-        $stmtInsert->bindParam(':registrationDate', $registration_date, PDO::PARAM_STR);
+        $stmtInsert->bindParam(':registrationDate', $registrationDate, PDO::PARAM_STR);
 
         $stmtInsert->execute();
 
@@ -119,7 +187,6 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <tr>
             <th>Name</th>
             <th>Surname</th>
-            <th>Hobby</th>
             <th>Career</th>
             <th>State</th>
             <th>Registration Date</th>
@@ -134,17 +201,28 @@ $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <td><?php echo $usuario['Career']; ?></td>
                 <td><?php echo $usuario['State']; ?></td>
                 <td><?php echo $usuario['Registration_Date']; ?></td>
-                <td>
+            <td>
                     <!-- Mueve esta sección dentro de la celda correspondiente -->
                     <form method="post" action="">
                         <input type="hidden" name="id" value="<?php echo $usuario['id']; ?>">
                         <input type="submit" name="delete_user" value="Eliminar">
+                        <a href="update.php?id=<?php echo $usuario['id']; ?>">Editar</a>
                     </form>
                 </td>
             </tr>
-        <?php } ?>
+        <?php 
+        }} else{
+            header('Location: tabla.php');
+        }
+    
+        ?>
     </tbody>
 </table>
+            <div id="style">
+                    <form action="cerrar.php" method="post">
+                        <input type="submit" name="cerrar_sesion" value="log_out">
+                    </form>
+            </div>
 
 </body>
 </html>

@@ -32,7 +32,7 @@
 </head>
 <body>
     <div class="contenedor">
-        <form class="formulario" action="index2.php" method="post">
+        <form class="formulario" action="tabla.php" method="post">
             <p class="titulo">Iniciar Sesión</p>
             <input type="text" id="texto" name="login" class="texto"  placeholder="Usuario"/>
             <input type="password" id="contraseña" name="password" class="contraseña" placeholder="Contraseña">
