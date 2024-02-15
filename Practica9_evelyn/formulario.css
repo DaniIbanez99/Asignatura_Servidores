@@ -1,0 +1,53 @@
+@import url('../Practica9_evelyn/sanger_show.zip');
+*{
+   font-family: 'sanger_show';
+}
+.title{
+    width: 380px;
+    margin-left: -22%;
+}
+.register-page {
+    width: 50%;
+    margin: auto;
+    margin-top: 10%;
+}
+
+.register-page input{
+    padding: 3%;
+    margin-top: 8%;
+}
+.form {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    max-width: 360px;
+    margin: 0 auto 100px;
+    padding: 45px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.register-form input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.register-form input[type="submit"] {
+    background-color: #4caf50;
+    color: #fff;
+    cursor: pointer;
+}
+
+.create{
+    width: 50%;
+    margin-left: 24%;
+    margin-right: 50%;
+    background-color: rgb(134, 218, 134);
+}
