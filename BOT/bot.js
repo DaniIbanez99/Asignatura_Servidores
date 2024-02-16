@@ -34,7 +34,16 @@ bot.onText(/\/clima (.+)/, async (msg, match) => {
         const weatherDescription = weather[0].description;
 
         // Enviar el mensaje con la información del clima al usuario
-        bot.sendMessage(chatId, `El clima en ${city} es ${weatherDescription} con una temperatura de ${temperature}°C`);
+        bot.sendMessage(chatId, `El clima en ${city} es ${weatherDescription} con una temperatura de ${temperature}°C`, {
+            reply_markup: {
+                keyboard: [
+                    ['/clima Madrid', '/clima Barcelona'],
+                    ['/clima Londres', '/clima París']
+                ],
+                resize_keyboard: true,
+                one_time_keyboard: true
+            }
+        });
     } catch (error) {
         // En caso de error, enviar un mensaje al usuario informando sobre el problema
         bot.sendMessage(chatId, 'Lo siento, no se pudo obtener la información del clima para esa ciudad.');
