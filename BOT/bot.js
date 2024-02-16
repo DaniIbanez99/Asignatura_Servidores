@@ -1,3 +1,9 @@
+/**
+ * Módulo que proporciona un bot de Telegram que muestra noticias recientes.
+ * @module TelegramNewsBot
+ */
+
+// Importar módulos necesarios
 const TelegramBot = require('node-telegram-bot-api');
 const axios = require('axios');
 
@@ -13,7 +19,10 @@ const newsApiUrl = 'https://newsapi.org/v2/top-headlines';
 // Crear una instancia del bot de Telegram
 const bot = new TelegramBot(token, { polling: true });
 
-// Manejar el comando /start
+/**
+ * Maneja el comando /start.
+ * @param {object} msg - Objeto que representa el mensaje recibido.
+ */
 bot.onText(/^\/start$/, (msg) => {
   const chatId = msg.chat.id;
   const response = '¡Hola! Presiona los botones a continuación para acceder al menú:';
@@ -29,7 +38,10 @@ bot.onText(/^\/start$/, (msg) => {
   bot.sendMessage(chatId, response, startKeyboard);
 });
 
-// Manejar el comando /news
+/**
+ * Maneja el comando /news.
+ * @param {object} msg - Objeto que representa el mensaje recibido.
+ */
 bot.onText(/^news$/, async (msg) => {
   const chatId = msg.chat.id;
   
@@ -57,8 +69,11 @@ bot.onText(/^news$/, async (msg) => {
   }
 });
 
-// Manejar comandos desconocidos
+/**
+ * Maneja los mensajes que no corresponden a comandos conocidos.
+ * @param {object} msg - Objeto que representa el mensaje recibido.
+ */
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
-  bot.sendMessage(chatId, 'Lo siento, no entendí ese comando. Prueba /news para ver las últimas noticias.');
+  bot.sendMessage(chatId, '');
 });
