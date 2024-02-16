@@ -4,54 +4,61 @@ const axios = require('axios');
 // Token de acceso para el bot de Telegram
 const token = '6748871802:AAFmjPjhz5v8dUOL_v1yzum2JS4frjiHdjQ';
 
-// Token de acceso para la API de OpenWeatherMap
-const weatherApiKey = 'c2d958c0bdbb0525d13f65af4bf33647';
+// Token de acceso para la API de News API
+const newsApiKey = '77042eead22c4c04ab116b026a6ddae8';
 
-// URL base de la API de OpenWeatherMap
-const weatherApiUrl = 'http://api.openweathermap.org/data/2.5/weather';
+// URL base de la API de News API
+const newsApiUrl = 'https://newsapi.org/v2/top-headlines';
 
 // Crear una instancia del bot de Telegram
 const bot = new TelegramBot(token, { polling: true });
 
-// Manejar el comando /clima
-bot.onText(/\/clima (.+)/, async (msg, match) => {
-    const chatId = msg.chat.id;
-    const city = match[1];
-
-    try {
-        // Consultar la API de OpenWeatherMap para obtener el clima
-        const response = await axios.get(weatherApiUrl, {
-            params: {
-                q: city,
-                appid: weatherApiKey,
-                units: 'metric' // Obtener la temperatura en Celsius
-            }
-        });
-
-        // Extraer la información del clima
-        const { main, weather } = response.data;
-        const temperature = main.temp;
-        const weatherDescription = weather[0].description;
-
-        // Enviar el mensaje con la información del clima al usuario
-        bot.sendMessage(chatId, `El clima en ${city} es ${weatherDescription} con una temperatura de ${temperature}°C`, {
-            reply_markup: {
-                keyboard: [
-                    ['/clima Madrid', '/clima Barcelona'],
-                    ['/clima Londres', '/clima París']
-                ],
-                resize_keyboard: true,
-                one_time_keyboard: true
-            }
-        });
-    } catch (error) {
-        // En caso de error, enviar un mensaje al usuario informando sobre el problema
-        bot.sendMessage(chatId, 'Lo siento, no se pudo obtener la información del clima para esa ciudad.');
+// Manejar el comando /start
+bot.onText(/^\/start$/, (msg) => {
+  const chatId = msg.chat.id;
+  const response = '¡Hola! Presiona los botones a continuación para acceder al menú:';
+  const startKeyboard = {
+    reply_markup: {
+      keyboard: [['news']],
+      resize_keyboard: true,
+      one_time_keyboard: true
     }
+  };
+  
+  // Enviar mensaje de bienvenida con el teclado personalizado
+  bot.sendMessage(chatId, response, startKeyboard);
+});
+
+// Manejar el comando /news
+bot.onText(/^news$/, async (msg) => {
+  const chatId = msg.chat.id;
+  
+  try {
+    // Consultar la API de News API para obtener noticias
+    const response = await axios.get(newsApiUrl, {
+      params: {
+        country: 'us', // Obtener noticias de Estados Unidos (puedes cambiarlo según tu preferencia)
+        apiKey: newsApiKey
+      }
+    });
+
+    // Extraer las noticias principales
+    const articles = response.data.articles;
+    let newsText = '📰 Aquí tienes algunas noticias recientes:\n\n';
+    articles.forEach((article, index) => {
+      newsText += `${index + 1}. ${article.title}\n${article.url}\n\n`;
+    });
+
+    // Enviar el mensaje con las noticias al usuario
+    bot.sendMessage(chatId, newsText);
+  } catch (error) {
+    // En caso de error, enviar un mensaje al usuario informando sobre el problema
+    bot.sendMessage(chatId, 'Lo siento, no se pudo obtener las noticias en este momento.');
+  }
 });
 
 // Manejar comandos desconocidos
 bot.on('message', (msg) => {
-    const chatId = msg.chat.id;
-    bot.sendMessage(chatId, 'Lo siento, no entendí ese comando. Prueba /clima seguido del nombre de una ciudad.');
+  const chatId = msg.chat.id;
+  bot.sendMessage(chatId, 'Lo siento, no entendí ese comando. Prueba /news para ver las últimas noticias.');
 });
